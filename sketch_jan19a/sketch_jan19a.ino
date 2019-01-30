@@ -4,6 +4,8 @@ int verdeA = 2;
 int rossoB = 5;
 int gialloB = 6;
 int verdeB = 7;
+int numLampeggi;
+int richiesta;
 
 void setup() {
     pinMode(rossoA,OUTPUT);
@@ -12,14 +14,39 @@ void setup() {
     pinMode(rossoB,OUTPUT);
     pinMode(gialloB,OUTPUT);
     pinMode(verdeB,OUTPUT);
-   }
+    //da qui è nuovo
+    richiesta = 0;
+}
+  
 
+  void loop() {
+  if (richiesta == 0)
+    {
+      richiestaValori();
+      }
+
+
+      
+    }
+    
+
+
+void richiestaValori(){
+       print("quanti lampeggi verde?");
+       while(Serial.available == 0) {};
+       numeLampeggi = Serial.read().toInt();
+   }
+ }
+
+   
 void lampeggiaVerdeB(){
    digitalWrite (verdeB, HIGH);
       delay  (1000);
       digitalWrite (verdeB, LOW);
       delay  (1000);
   }
+
+
 
 void lampeggiaVerdeA(){
  digitalWrite (verdeA, HIGH);
