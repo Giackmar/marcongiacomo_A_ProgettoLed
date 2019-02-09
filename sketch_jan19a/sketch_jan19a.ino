@@ -4,99 +4,140 @@ int verdeA = 2;
 int rossoB = 5;
 int gialloB = 6;
 int verdeB = 7;
-int numLampeggi;
-int richiesta;
+int DurataLampeggioVerde = 0;
+int NumeroLampeggioVerde = 0;
+int DurataGiallo = 0;
+int DurataRosso = 0;
+int DurataVerde = 0;
+
 
 void setup() {
+  
+  Serial.begin(9600);
     pinMode(rossoA,OUTPUT);
     pinMode(gialloA,OUTPUT);
     pinMode(verdeA,OUTPUT);
     pinMode(rossoB,OUTPUT);
     pinMode(gialloB,OUTPUT);
     pinMode(verdeB,OUTPUT);
-    //da qui è nuovo
-    richiesta = 0;
-}
-  
+    
 
-  void loop() {
-  if (richiesta == 0)
+    if (DurataLampeggioVerde == 0)
     {
-      richiestaValori();
-      }
-
-
-      
+      LampeggiOVerdeDurata();
     }
     
-
-
-void richiestaValori(){
-       print("quanti lampeggi verde?");
-       while(Serial.available == 0) {};
-       numeLampeggi = Serial.read().toInt();
-   }
- }
-
-   
-void lampeggiaVerdeB(){
-   digitalWrite (verdeB, HIGH);
-      delay  (1000);
-      digitalWrite (verdeB, LOW);
-      delay  (1000);
-  }
-
-
-
-void lampeggiaVerdeA(){
- digitalWrite (verdeA, HIGH);
-      delay  (1000);
-      digitalWrite (verdeA, LOW);
-      delay  (1000);
+    if (NumeroLampeggioVerde == 0)
+    {
+      LampeggiOVerdeNumero();
+    }
+ 
+    if (DurataGiallo == 0)
+    {
+      GialloDurata();
+    }
+    
+    if (DurataRosso == 0)
+    {
+      RossoDurata();
+    }
+    
+    CalcoloVerdeAlone();
   
 }
-      
-void semaforo() {
-      digitalWrite (rossoA, HIGH);
-      digitalWrite (verdeB, HIGH);
-      digitalWrite (gialloA, LOW);
-      digitalWrite (gialloB, LOW);
-      digitalWrite (rossoB, LOW);
-      digitalWrite (verdeA, LOW);
-      delay  (10000);
-      
-      lampeggiaVerdeB();
-      lampeggiaVerdeB();
-      lampeggiaVerdeB();
-      lampeggiaVerdeB();
-      
-      
-      digitalWrite (rossoA, HIGH);
-      digitalWrite (gialloA, HIGH);
-      digitalWrite (gialloB, HIGH);
-      digitalWrite (verdeB, LOW);
-      delay  (2000);
-
-      digitalWrite (rossoB, HIGH);
-      digitalWrite (verdeA, HIGH);
-      digitalWrite (gialloA, LOW);
-      digitalWrite (gialloB, LOW);
-      digitalWrite (rossoA, LOW);
-      delay  (10000);
-
-      lampeggiaVerdeA();
-      lampeggiaVerdeA();
-      lampeggiaVerdeA();
-      lampeggiaVerdeA();
-      
-      digitalWrite (rossoB, HIGH);
-      digitalWrite (gialloB, HIGH);
-      digitalWrite (gialloA, HIGH);
-      digitalWrite (verdeA, LOW);
-      delay  (10000);
-
-      
-
-      
     
-}    
+    
+
+void loop(){
+
+    fase1();
+    CalcoloLampeggio(7);
+    gialloON();
+    fase2();
+    CalcoloLampeggio(2);
+    gialloON();
+
+}
+
+
+
+
+void LampeggiOVerdeDurata(){
+       Serial.println ("Inserire i vari parametri per il semaforo");
+       Serial.println ("inserisci la durata di ogni lampeggio verde in secondi");
+       while(Serial.available() == 0) {};
+       DurataLampeggioVerde = Serial.readString().toInt();
+}
+       
+void LampeggiOVerdeNumero(){
+       Serial.println ("inserisci il numero di lampeggi che eseguirà il verde");
+       while(Serial.available() == 0) {};
+       NumeroLampeggioVerde = Serial.readString().toInt();
+}
+       
+void GialloDurata(){
+       Serial.println ("inserisci la durata del giallo in secondi");
+       while(Serial.available() == 0) {};
+       DurataGiallo = Serial.readString().toInt();
+}
+       
+void RossoDurata(){
+       Serial.print ("inserisci la durata del rosso in secondi");
+       while (Serial.available() == 0) {};
+       DurataRosso = Serial.readString().toInt();
+}
+
+
+       
+
+void CalcoloLampeggio(int pin){
+    for ( int i=0 ; i<NumeroLampeggioVerde ; i++ ){
+    lampeggiaVerde(pin, DurataLampeggioVerde/2);
+    }
+}
+    
+      
+void lampeggiaVerde(int pin, int tempo) {
+      digitalWrite (pin, LOW);
+      delay  (tempo);
+      digitalWrite (pin, HIGH);
+      delay  (tempo);
+}
+
+void CalcoloVerdeAlone(){
+     DurataVerde=DurataRosso-DurataGiallo-(NumeroLampeggioVerde*DurataLampeggioVerde);
+     while(DurataVerde<2000){
+      setup();
+     }
+}
+
+ 
+
+      
+void fase1(){
+    digitalWrite (verdeB, HIGH);
+    digitalWrite (verdeA, LOW);
+    digitalWrite (rossoA, HIGH);
+    digitalWrite (rossoB, LOW);
+    digitalWrite (gialloB, LOW);
+    digitalWrite (gialloA, LOW);
+    delay(DurataVerde);
+}
+
+void fase2(){
+    digitalWrite (verdeB, LOW);
+    digitalWrite (verdeA, HIGH);
+    digitalWrite (rossoA, LOW);
+    digitalWrite (rossoB, HIGH);
+    digitalWrite (gialloB, LOW);
+    digitalWrite (gialloA, LOW);
+    delay(DurataVerde);
+}
+ 
+void gialloON(){
+   digitalWrite (gialloB, HIGH);
+   digitalWrite (gialloA, HIGH);
+   digitalWrite (verdeB, LOW);
+   digitalWrite (verdeA, LOW);
+   delay(DurataGiallo);
+}
