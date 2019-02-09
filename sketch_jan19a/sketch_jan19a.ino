@@ -11,12 +11,17 @@ int DurataRosso = 0;
 int DurataVerde = 0;
 
 
-void setup() {
+void reset(){
     DurataLampeggioVerde = 0;
     NumeroLampeggioVerde = 0;
     DurataGiallo = 0;
     DurataRosso = 0;
     DurataVerde = 0;
+  }
+
+void setup() {
+
+    reset();
     Serial.begin(9600);
     pinMode(rossoA,OUTPUT);
     pinMode(gialloA,OUTPUT);
@@ -24,6 +29,7 @@ void setup() {
     pinMode(rossoB,OUTPUT);
     pinMode(gialloB,OUTPUT);
     pinMode(verdeB,OUTPUT);
+
     
     
     if (DurataLampeggioVerde == 0)
@@ -122,13 +128,11 @@ void lampeggiaVerde(int pin, int tempo) {
 void CalcoloVerdeAlone(){
      DurataVerde=DurataRosso-DurataGiallo-(NumeroLampeggioVerde*DurataLampeggioVerde);
      while(DurataVerde<=2000){
-     Serial.print("    ATTENZIONE ERRORE");
-     Serial.println(" --> La durata del rosso deve essere maggiore della durata del giallo");
+     Serial.print("ATTENZIONE ERRORE");
       setup();   
       }
 }
 
- 
 
       
 void fase1(){
