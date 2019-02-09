@@ -63,28 +63,39 @@ void loop(){
 
 
 void LampeggiOVerdeDurata(){
-       Serial.println ("Inserire i vari parametri per il semaforo");
-       Serial.println ("inserisci la durata di ogni lampeggio verde in secondi");
+       Serial.println ("inserisci la durata di ogni lampeggio verde in millesecondi");
        while(Serial.available() == 0) {};
        DurataLampeggioVerde = Serial.readString().toInt();
+       Serial.print ("ogni lampeggio verde durerà ");
+       Serial.print (DurataLampeggioVerde);
+       Serial.println (" millesecondi");
 }
        
 void LampeggiOVerdeNumero(){
        Serial.println ("inserisci il numero di lampeggi che eseguirà il verde");
        while(Serial.available() == 0) {};
        NumeroLampeggioVerde = Serial.readString().toInt();
+       Serial.print ("il verde lampeggierà  ");
+       Serial.print (NumeroLampeggioVerde);
+       Serial.println (" volte");
 }
        
 void GialloDurata(){
-       Serial.println ("inserisci la durata del giallo in secondi");
+       Serial.println ("inserisci la durata del giallo in millesecondi");
        while(Serial.available() == 0) {};
        DurataGiallo = Serial.readString().toInt();
+       Serial.print ("il giallo durerà ");
+       Serial.print (DurataGiallo);
+       Serial.println (" millesecondi");
 }
        
 void RossoDurata(){
-       Serial.print ("inserisci la durata del rosso in secondi");
+       Serial.print ("inserisci la durata del rosso in millesecondi");
        while (Serial.available() == 0) {};
        DurataRosso = Serial.readString().toInt();
+       Serial.print ("il rosso durerà ");
+       Serial.print (DurataRosso);
+       Serial.println (" millesecondi");
 }
 
 
