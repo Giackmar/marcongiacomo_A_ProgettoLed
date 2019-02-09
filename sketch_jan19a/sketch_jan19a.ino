@@ -12,8 +12,12 @@ int DurataVerde = 0;
 
 
 void setup() {
-  
-  Serial.begin(9600);
+    DurataLampeggioVerde = 0;
+    NumeroLampeggioVerde = 0;
+    DurataGiallo = 0;
+    DurataRosso = 0;
+    DurataVerde = 0;
+    Serial.begin(9600);
     pinMode(rossoA,OUTPUT);
     pinMode(gialloA,OUTPUT);
     pinMode(verdeA,OUTPUT);
@@ -21,7 +25,7 @@ void setup() {
     pinMode(gialloB,OUTPUT);
     pinMode(verdeB,OUTPUT);
     
-
+    
     if (DurataLampeggioVerde == 0)
     {
       LampeggiOVerdeDurata();
@@ -63,37 +67,37 @@ void loop(){
 
 
 void LampeggiOVerdeDurata(){
-       Serial.println ("inserisci la durata di ogni lampeggio verde in millesecondi");
+       Serial.println ("--> inserisci la durata di ogni lampeggio verde in millesecondi");
        while(Serial.available() == 0) {};
        DurataLampeggioVerde = Serial.readString().toInt();
-       Serial.print ("ogni lampeggio verde durerà ");
+       Serial.print ("    ogni lampeggio verde durerà ");
        Serial.print (DurataLampeggioVerde);
        Serial.println (" millesecondi");
 }
        
 void LampeggiOVerdeNumero(){
-       Serial.println ("inserisci il numero di lampeggi che eseguirà il verde");
+       Serial.println ("--> inserisci il numero di lampeggi che eseguirà il verde");
        while(Serial.available() == 0) {};
        NumeroLampeggioVerde = Serial.readString().toInt();
-       Serial.print ("il verde lampeggierà  ");
+       Serial.print ("    il verde lampeggierà  ");
        Serial.print (NumeroLampeggioVerde);
        Serial.println (" volte");
 }
        
 void GialloDurata(){
-       Serial.println ("inserisci la durata del giallo in millesecondi");
+       Serial.println ("--> inserisci la durata del giallo in millesecondi");
        while(Serial.available() == 0) {};
        DurataGiallo = Serial.readString().toInt();
-       Serial.print ("il giallo durerà ");
+       Serial.print ("    il giallo durerà ");
        Serial.print (DurataGiallo);
        Serial.println (" millesecondi");
 }
        
 void RossoDurata(){
-       Serial.print ("inserisci la durata del rosso in millesecondi");
+       Serial.println ("--> inserisci la durata del rosso in millesecondi");
        while (Serial.available() == 0) {};
        DurataRosso = Serial.readString().toInt();
-       Serial.print ("il rosso durerà ");
+       Serial.print ("    il rosso durerà ");
        Serial.print (DurataRosso);
        Serial.println (" millesecondi");
 }
@@ -117,9 +121,11 @@ void lampeggiaVerde(int pin, int tempo) {
 
 void CalcoloVerdeAlone(){
      DurataVerde=DurataRosso-DurataGiallo-(NumeroLampeggioVerde*DurataLampeggioVerde);
-     while(DurataVerde<2000){
-      setup();
-     }
+     while(DurataVerde<=2000){
+     Serial.print("    ATTENZIONE ERRORE");
+     Serial.println(" --> La durata del rosso deve essere maggiore della durata del giallo");
+      setup();   
+      }
 }
 
  
